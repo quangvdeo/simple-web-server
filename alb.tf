@@ -2,7 +2,9 @@ module "alb_external" {
   source  = "terraform-aws-modules/alb/aws"
 
   name = "${var.project_name}-alb"
-
+  vpc_id  = module.vpc.vpc_id
+  # For testing only
+  enable_deletion_protection = false
   subnets         = module.vpc.public_subnets
   security_groups = [aws_security_group.web_elb.id, aws_security_group.remote_access.id]
   internal        = false
@@ -19,7 +21,7 @@ module "alb_external" {
 
   target_groups = {
     ec2-instance = {
-      name_prefix      = "ec2_web"
+      name_prefix      = "h1"
       protocol         = "HTTP"
       target_type      = "instance"
       health_check = {
